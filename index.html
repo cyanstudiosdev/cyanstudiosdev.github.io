@@ -1,59 +1,95 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        hr {
-            margin: 20px auto;
-            width: 50%;
-        }
-        blockquote {
-            font-size: 24px;
-            font-style: italic;
-            color: #333;
-            display: inline-block;
-            text-align: center;
-            margin-bottom: 0;
-        }
-        cite {
-            display: block;
-            margin-top: 10px;
-            font-size: 18px;
-            color: #555;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Development Roadmap</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .roadmap {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .roadmap h1 {
+      text-align: center;
+      color: #333;
+    }
+    .milestone {
+      border-left: 4px solid #4CAF50;
+      padding-left: 20px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .milestone::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      background: #4CAF50;
+      border-radius: 50%;
+    }
+    .milestone h2 {
+      margin: 0;
+      color: #4CAF50;
+    }
+    .milestone small {
+      color: #888;
+    }
+    .milestone p {
+      margin: 5px 0 0 0;
+    }
+  </style>
 </head>
 <body>
+  <div class="roadmap">
+    <h1>Development Roadmap</h1>
 
-    <blockquote>
-        "Girls defy the laws of physics, when boys have no clothes on they get cold, when girls have their clothes off they get hot"
-    </blockquote>
-    <hr>
-    <cite>- Lorenzo Olson</cite>
+    <div class="milestone">
+      <h2>Phase 1: Planning</h2>
+      <small>May 2025</small>
+      <p>Define project scope, team roles, and core features.</p>
+    </div>
 
-    <br><br>
+    <div class="milestone">
+      <h2>Phase 2: Prototype</h2>
+      <small>June 2025</small>
+      <p>Create wireframes and basic UI mockups for early feedback.</p>
+    </div>
 
-    <blockquote>
-        "Are you from Tennessee because you're the only ten I see"
-    </blockquote>
-    <hr>
-    <cite>- Liam Musil</cite>
+    <div class="milestone">
+      <h2>Phase 3: Development</h2>
+      <small>July - September 2025</small>
+      <p>Build core features, integrate backend, and test functionality.</p>
+    </div>
 
-    <br><br>
+    <div class="milestone">
+      <h2>Phase 4: Testing</h2>
+      <small>October 2025</small>
+      <p>Conduct QA testing, fix bugs, and finalize release candidate.</p>
+    </div>
 
-    <blockquote>
-        "Oh My lanta"
-    </blockquote>
-    <hr>
-    <cite>- Kate Anderson</cite>
+    <div class="milestone">
+      <h2>Phase 5: Launch</h2>
+      <small>November 2025</small>
+      <p>Official product launch with marketing and support rollout.</p>
+    </div>
 
+    <div class="milestone">
+      <h2>Phase 6: Post-Launch Updates</h2>
+      <small>December 2025 onward</small>
+      <p>Collect user feedback, roll out patches, and plan next features.</p>
+    </div>
+  </div>
 </body>
 </html>
