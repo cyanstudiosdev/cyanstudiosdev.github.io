@@ -60,6 +60,29 @@
       font-size: 0.9rem;
     }
 
+    .topnav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
+    .username {
+      font-size: 0.9rem;
+      color: #c9d1d9;
+    }
+    .logout-button {
+      background: transparent;
+      color: #8b949e;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-decoration: underline;
+    }
+
     header {
       padding: 20px;
       font-size: 2rem;
@@ -108,7 +131,6 @@
       margin-top: 4px;
     }
 
-    /* Modal styles */
     .modal {
       display: none;
       position: fixed;
@@ -149,7 +171,6 @@
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
   <div class="topnav">
     <div class="topnav-left">
       <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
@@ -159,7 +180,9 @@
         <a href="#" class="tab active">📊 Roadmap</a>
       </div>
     </div>
-    <button class="login-button" id="discordLogin" onclick="loginWithDiscord()">Log in with Discord</button>
+    <div class="topnav-right" id="userArea">
+      <button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>
+    </div>
   </div>
 
   <header>Main Roadmap</header>
@@ -179,7 +202,6 @@
     </div>
   </div>
 
-  <!-- Modal for comment/upvote -->
   <div id="commentModal" class="modal">
     <div class="modal-content">
       <h3 id="modalTitle">Comment on:</h3>
@@ -190,7 +212,6 @@
     </div>
   </div>
 
-  <!-- Load Roadmap Cards -->
   <script>
     fetch('data.json')
       .then(res => res.json())
@@ -224,54 +245,54 @@
       });
   </script>
 
-<!-- Discord Login Script -->
-<script>
-  const clientId = "1374928268901220482";
-  const redirectUri = "https://cyanstudiosdev.github.io";
+  <script>
+    const clientId = "1374928268901220482";
+    const redirectUri = "https://cyanstudiosdev.github.io";
 
-  function loginWithDiscord() {
-    const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
-    window.location.href = authUrl;
-  }
-
-  function getTokenFromHash() {
-    const match = window.location.hash.match(/access_token=([^&]*)/);
-    return match ? match[1] : null;
-  }
-
-  async function fetchDiscordUser(token) {
-    const res = await fetch("https://discord.com/api/users/@me", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error("Failed to fetch user");
-    return await res.json();
-  }
-
-  function showUser(user) {
-    const loginBtn = document.getElementById("discordLogin");
-    if (loginBtn) {
-      loginBtn.textContent = `${user.username}#${user.discriminator}`;
-      loginBtn.disabled = true;
-      loginBtn.style.opacity = "0.7";
-      loginBtn.style.cursor = "default";
+    function loginWithDiscord() {
+      const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
+      window.location.href = authUrl;
     }
-  }
 
-  // Handle login state
-  const token = getTokenFromHash();
-  if (token) {
-    fetchDiscordUser(token).then(user => {
-      localStorage.setItem("discordUser", JSON.stringify(user));
-      showUser(user);
-      // Remove token from URL for cleanliness
-      history.replaceState({}, document.title, window.location.pathname);
-    }).catch(() => alert("Discord login failed"));
-  } else if (localStorage.getItem("discordUser")) {
-    showUser(JSON.parse(localStorage.getItem("discordUser")));
-  }
-</script>
+    function getTokenFromHash() {
+      const match = window.location.hash.match(/access_token=([^&]*)/);
+      return match ? match[1] : null;
+    }
 
-  <!-- Comment & Upvote Script -->
+    async function fetchDiscordUser(token) {
+      const res = await fetch("https://discord.com/api/users/@me", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error("Failed to fetch user");
+      return await res.json();
+    }
+
+    function showUser(user) {
+      const userArea = document.getElementById("userArea");
+      userArea.innerHTML = `
+        <img class="user-avatar" src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="avatar">
+        <span class="username">${user.username}#${user.discriminator}</span>
+        <button class="logout-button" onclick="logout()">Log out</button>
+      `;
+    }
+
+    function logout() {
+      localStorage.removeItem("discordUser");
+      location.reload();
+    }
+
+    const token = getTokenFromHash();
+    if (token) {
+      fetchDiscordUser(token).then(user => {
+        localStorage.setItem("discordUser", JSON.stringify(user));
+        showUser(user);
+        history.replaceState({}, document.title, window.location.pathname);
+      }).catch(() => alert("Discord login failed"));
+    } else if (localStorage.getItem("discordUser")) {
+      showUser(JSON.parse(localStorage.getItem("discordUser")));
+    }
+  </script>
+
   <script>
     let selectedTitle = "";
 
