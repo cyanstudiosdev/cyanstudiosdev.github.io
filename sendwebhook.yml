@@ -1,0 +1,14 @@
+name: Send Discord Webhook
+
+on:
+  workflow_dispatch:  # Run manually from Actions tab
+
+jobs:
+  send_webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send secure webhook message
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d "{\"content\": \"🔐 Secure comment via GitHub Action.\"}" \
+            "${{ secrets.DISC_WEB_HOOK }}"
