@@ -12,7 +12,6 @@
       color: #c9d1d9;
     }
 
-    /* Top Navigation */
     .topnav {
       background-color: #0d1117;
       padding: 10px 20px;
@@ -61,7 +60,6 @@
       font-size: 0.9rem;
     }
 
-    /* Main Page Content */
     header {
       padding: 20px;
       font-size: 2rem;
@@ -92,6 +90,7 @@
       margin-top: 10px;
       border-radius: 8px;
       border: 1px solid #30363d;
+      cursor: pointer;
     }
     .tag {
       display: inline-block;
@@ -107,6 +106,44 @@
       color: #8b949e;
       font-size: 0.75rem;
       margin-top: 4px;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0; width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #161b22;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      color: #c9d1d9;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .modal-content textarea {
+      width: 100%;
+      background: #0d1117;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 10px;
+    }
+    .modal-content button {
+      padding: 10px;
+      background-color: #238636;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -142,6 +179,18 @@
     </div>
   </div>
 
+  <!-- Modal for comment/upvote -->
+  <div id="commentModal" class="modal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Comment on:</h3>
+      <textarea id="commentText" rows="4" placeholder="Write a comment..."></textarea>
+      <button onclick="sendComment()">Submit Comment</button>
+      <button onclick="sendUpvote()">Upvote 👍</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Load Roadmap Cards -->
   <script>
     fetch('data.json')
       .then(res => res.json())
@@ -151,6 +200,7 @@
           if (column) {
             const card = document.createElement('div');
             card.className = 'card';
+            card.onclick = () => openModal(item.title);
 
             const title = document.createElement('div');
             title.textContent = item.title;
@@ -177,7 +227,7 @@
   <!-- Discord Login Script -->
   <script>
     const clientId = "1365521033729151078";
-    const redirectUri = "https://sakuravanilla.github.io/roadmap.html"; // Adjust if page path is different
+    const redirectUri = "https://sakuravanilla.github.io/roadmap.html";
 
     function loginWithDiscord() {
       const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
@@ -217,6 +267,66 @@
     } else if (localStorage.getItem("discordUser")) {
       const user = JSON.parse(localStorage.getItem("discordUser"));
       showDiscordUser(user);
+    }
+  </script>
+
+  <!-- Comment & Upvote Script -->
+  <script>
+    let selectedTitle = "";
+
+    function openModal(title) {
+      if (!localStorage.getItem("discordUser")) {
+        alert("You must log in with Discord to comment or upvote.");
+        return;
+      }
+      selectedTitle = title;
+      document.getElementById("modalTitle").textContent = `Comment on: ${title}`;
+      document.getElementById("commentModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("commentModal").style.display = "none";
+      document.getElementById("commentText").value = "";
+    }
+
+    function sendComment() {
+      const user = JSON.parse(localStorage.getItem("discordUser"));
+      const comment = document.getElementById("commentText").value;
+      if (!comment) return alert("Please write a comment.");
+
+      fetch("docs/secure-webhook.json").then(res => res.json()).then(data => {
+        fetch(data.webhook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `💬 **New Comment on** \`${selectedTitle}\`\n**User:** ${user.username}#${user.discriminator}\n**Comment:** ${comment}`
+          })
+        }).then(() => {
+          alert("Comment sent!");
+          closeModal();
+        });
+      });
+    }
+
+    function sendUpvote() {
+      const user = JSON.parse(localStorage.getItem("discordUser"));
+      fetch("docs/secure-webhook.json").then(res => res.json()).then(data => {
+        fetch(data.webhook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `👍 **Upvote for** \`${selectedTitle}\`\n**By:** ${user.username}#${user.discriminator}`
+          })
+        }).then(() => {
+          alert("Upvote sent!");
+          closeModal();
+        });
+      });
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("commentModal");
+      if (event.target === modal) closeModal();
     }
   </script>
 
