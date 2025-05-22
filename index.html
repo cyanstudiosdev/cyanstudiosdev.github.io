@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Development Roadmap</title>
+  <title>Cyan Dev Roadmap</title>
   <style>
     body {
       margin: 0;
@@ -11,6 +11,57 @@
       background-color: #0d1117;
       color: #c9d1d9;
     }
+
+    /* Top Navigation */
+    .topnav {
+      background-color: #0d1117;
+      padding: 10px 20px;
+      border-bottom: 1px solid #21262d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topnav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .topnav-left img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+    .topnav-left .title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-left: 20px;
+    }
+    .tab {
+      color: #8b949e;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+    .tab.active {
+      background-color: #161b22;
+      color: white;
+      font-weight: bold;
+    }
+    .login-button {
+      background: #21262d;
+      color: #8b949e;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    /* Main Page Content */
     header {
       padding: 20px;
       font-size: 2rem;
@@ -61,7 +112,21 @@
 </head>
 <body>
 
+  <!-- Top Navigation Bar -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
+      <span class="title">Cyan Dev</span>
+      <div class="tabs">
+        <a href="updates.html" class="tab">🔄 Changelog</a>
+        <a href="#" class="tab active">📊 Roadmap</a>
+      </div>
+    </div>
+    <button class="login-button">Log in with Cyan Account</button>
+  </div>
+
   <header>Main Roadmap</header>
+
   <div class="container">
     <div class="column" id="planned">
       <h2>📝 Planned</h2>
