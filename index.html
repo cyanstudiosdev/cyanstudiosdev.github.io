@@ -224,17 +224,17 @@
       });
   </script>
 
-  <!-- Discord Login Script -->
-  <script>
+<!-- Discord Login Script -->
+<script>
   const clientId = "1374928268901220482";
-  const redirectUri = "https://cyanstudiosdev.github.io/roadmap.html"; // Your correct domain here
+  const redirectUri = "https://cyanstudiosdev.github.io";
 
   function loginWithDiscord() {
     const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
     window.location.href = authUrl;
   }
 
-  function getToken() {
+  function getTokenFromHash() {
     const match = window.location.hash.match(/access_token=([^&]*)/);
     return match ? match[1] : null;
   }
@@ -243,30 +243,31 @@
     const res = await fetch("https://discord.com/api/users/@me", {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if (!res.ok) throw new Error();
+    if (!res.ok) throw new Error("Failed to fetch user");
     return await res.json();
   }
 
-  function showDiscordUser(user) {
-    const loginButton = document.getElementById("discordLogin");
-    if (loginButton) {
-      loginButton.textContent = `${user.username}#${user.discriminator}`;
-      loginButton.disabled = true;
-      loginButton.style.opacity = "0.7";
-      loginButton.style.cursor = "default";
+  function showUser(user) {
+    const loginBtn = document.getElementById("discordLogin");
+    if (loginBtn) {
+      loginBtn.textContent = `${user.username}#${user.discriminator}`;
+      loginBtn.disabled = true;
+      loginBtn.style.opacity = "0.7";
+      loginBtn.style.cursor = "default";
     }
   }
 
-  const token = getToken();
+  // Handle login state
+  const token = getTokenFromHash();
   if (token) {
     fetchDiscordUser(token).then(user => {
       localStorage.setItem("discordUser", JSON.stringify(user));
-      showDiscordUser(user);
+      showUser(user);
+      // Remove token from URL for cleanliness
       history.replaceState({}, document.title, window.location.pathname);
-    }).catch(() => alert("Discord authentication failed"));
+    }).catch(() => alert("Discord login failed"));
   } else if (localStorage.getItem("discordUser")) {
-    const user = JSON.parse(localStorage.getItem("discordUser"));
-    showDiscordUser(user);
+    showUser(JSON.parse(localStorage.getItem("discordUser")));
   }
 </script>
 
