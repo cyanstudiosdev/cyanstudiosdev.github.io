@@ -122,7 +122,7 @@
         <a href="#" class="tab active">📊 Roadmap</a>
       </div>
     </div>
-    <button class="login-button">Log in with Discord</button>
+    <button class="login-button" id="discordLogin" onclick="loginWithDiscord()">Log in with Discord</button>
   </div>
 
   <header>Main Roadmap</header>
@@ -172,6 +172,52 @@
           }
         });
       });
+  </script>
+
+  <!-- Discord Login Script -->
+  <script>
+    const clientId = "1365521033729151078";
+    const redirectUri = "https://sakuravanilla.github.io/roadmap.html"; // Adjust if page path is different
+
+    function loginWithDiscord() {
+      const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
+      window.location.href = authUrl;
+    }
+
+    function getToken() {
+      const match = window.location.hash.match(/access_token=([^&]*)/);
+      return match ? match[1] : null;
+    }
+
+    async function fetchDiscordUser(token) {
+      const res = await fetch("https://discord.com/api/users/@me", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error();
+      return await res.json();
+    }
+
+    function showDiscordUser(user) {
+      const loginButton = document.getElementById("discordLogin");
+      if (loginButton) {
+        loginButton.textContent = `${user.username}#${user.discriminator}`;
+        loginButton.disabled = true;
+        loginButton.style.opacity = "0.7";
+        loginButton.style.cursor = "default";
+      }
+    }
+
+    const token = getToken();
+    if (token) {
+      fetchDiscordUser(token).then(user => {
+        localStorage.setItem("discordUser", JSON.stringify(user));
+        showDiscordUser(user);
+        history.replaceState({}, document.title, window.location.pathname);
+      }).catch(() => alert("Discord authentication failed"));
+    } else if (localStorage.getItem("discordUser")) {
+      const user = JSON.parse(localStorage.getItem("discordUser"));
+      showDiscordUser(user);
+    }
   </script>
 
 </body>
