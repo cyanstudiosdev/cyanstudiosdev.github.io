@@ -1,14 +1,19 @@
-name: Send Discord Webhook
+name: Create Secure Webhook JSON
 
-on:
-  workflow_dispatch:  # Run manually from Actions tab
+on: [push]
 
 jobs:
   send_webhook:
     runs-on: ubuntu-latest
     steps:
-      - name: Send secure webhook message
+      - name: Create secure-webhook.json
         run: |
-          curl -X POST -H "Content-Type: application/json" \
-            -d "{\"content\": \"🔐 Secure comment via GitHub Action.\"}" \
-            "${{ secrets.DISC_WEB_HOOK }}"
+          mkdir -p docs
+          echo '{"webhook": "${{ secrets.DISC_WEB_HOOK }}"}' > docs/secure-webhook.json
+      - name: Commit file
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/secure-webhook.json
+          git commit -m "Add secure webhook json"
+          git push
