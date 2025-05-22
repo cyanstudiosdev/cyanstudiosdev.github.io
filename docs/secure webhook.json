@@ -1,0 +1,18 @@
+function sendComment() {
+  const user = JSON.parse(localStorage.getItem("discordUser"));
+  const comment = document.getElementById("commentText").value;
+  if (!comment) return alert("Please write a comment.");
+
+  fetch("docs/secure-webhook.json").then(res => res.json()).then(data => {
+    fetch(data.webhook, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: `💬 **New Comment on** \`${selectedTitle}\`\n**User:** ${user.username}#${user.discriminator}\n**Comment:** ${comment}`
+      })
+    }).then(() => {
+      alert("Comment sent!");
+      closeModal();
+    });
+  });
+}
