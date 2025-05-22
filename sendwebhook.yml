@@ -6,7 +6,7 @@ jobs:
   send_webhook:
     runs-on: ubuntu-latest
     steps:
-      - name: Create secure-webhook.json
+      - name: Create secure webhook.json
         run: |
           mkdir -p docs
           echo '{"webhook": "${{ secrets.DISC_WEB_HOOK }}"}' > docs/secure-webhook.json
