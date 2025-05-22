@@ -1,0 +1,71 @@
+[
+  {
+    "section": "planned",
+    "title": "Duos Ranked Queue System",
+    "main tag": "Features",
+    "set time": false
+  },
+  {
+    "section": "planned",
+    "title": "New Map Voting System",
+    "main tag": "Quality of Life",
+    "set time": false
+  },
+  {
+    "section": "prog",
+    "title": "Murder Mystery: Challenges, MicroHub and LTM",
+    "main tag": "Minigames",
+    "set time": false
+  },
+  {
+    "section": "prog",
+    "title": "BedWars: Season 3",
+    "main tag": "Minigames",
+    "set time": false
+  },
+  {
+    "section": "next",
+    "title": "New LTM Rotation: Snow Games",
+    "main tag": "Minigames",
+    "set time": false
+  },
+  {
+    "section": "released",
+    "title": "BedWars: Season 2",
+    "main tag": "Minigames",
+    "set time": true,
+    "time": "📅 Jan 31"
+  },
+  {
+    "section": "released",
+    "title": "SkyWars: Prestige",
+    "main tag": "Minigames",
+    "set time": false
+  },
+  {
+    "section": "released",
+    "title": "Build Battle & Speed Builders LTM",
+    "main tag": "Minigames",
+    "set time": false
+  },
+  {
+    "section": "released",
+    "title": "LTM / Public Preview: MobGame",
+    "main tag": "Minigames",
+    "set time": true,
+    "time": "📅 Dec 10"
+  },
+  {
+    "section": "released",
+    "title": "Region Agnostic Party Queues",
+    "main tag": "Features",
+    "set time": false
+  },
+  {
+    "section": "released",
+    "title": "Block Friday Bundle 2024",
+    "main tag": "Cosmetics",
+    "set time": true,
+    "time": "📅 Nov 28"
+  }
+]
