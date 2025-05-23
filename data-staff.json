@@ -11,7 +11,7 @@
   "sections": [
     {
       "name": "Management",
-      "icon": "🧠",
+      "icon": ":brain:",
       "members": [
         ["CyanWolf", "0"],
         ["Sweet Japan", "1"],
@@ -21,35 +21,36 @@
       ]
     },
     {
-      "name": "Builders",
-      "icon": "🏗️",
-      "members": [
-        ["ItzAleReal", "4"],
-        ["ShurikenIN", "4"],
-        ["Yashu", "4"],
-        ["Drifty", "3"],
-        ["Alex", "4"],
-        ["Bepis", "4"],
-        ["Wisp", "4"]
-      ]
-    },
-    {
-      "name": "Artists",
-      "icon": "🎨",
-      "members": [
-        ["buldozer", "5"],
-        ["TechnoMax", "5"]
-      ]
-    },
-    {
       "name": "Developers",
-      "icon": "💻",
+      "icon": ":computer:",
       "members": [
         ["King James", "6"],
         ["RicDevs", "6"],
         ["FishyDev", "6"],
         ["SoyGqbo", "6"],
         ["TruncateBat", "6"]
+      ]
+    },
+    {
+      "name": "Builders",
+      "icon": ":construction_site:",
+      "members": [
+        ["Drifty", "3"],
+        ["ItzAleReal", "4"],
+        ["ShurikenIN", "4"],
+        ["Yashu", "4"],
+        ["Alex", "4"],
+        ["Bepis", "4"],
+        ["Wisp", "4"],
+        ["Gobytron", "4"]
+      ]
+    },
+    {
+      "name": "Artists",
+      "icon": ":art:",
+      "members": [
+        ["buldozer", "5"],
+        ["TechnoMax", "5"]
       ]
     }
   ]
