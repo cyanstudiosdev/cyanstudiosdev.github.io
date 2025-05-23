@@ -1,33 +1,55 @@
 {
   "roles": {
-    "0": { "name": "Admin", "color": "#999999" },
-    "1": { "name": "Head Admin", "color": "#FFD700" },
-    "2": { "name": "Builder", "color": "#00FFFF" },
-    "3": { "name": "Lead Developer", "color": "#FF5555" }
+    "0": { "name": "Owner", "color": "#FFD700" },
+    "1": { "name": "Co Owner", "color": "#FFA500" },
+    "2": { "name": "Manager", "color": "#00FFFF" },
+    "3": { "name": "Head Builder", "color": "#ADFF2F" },
+    "4": { "name": "Builder", "color": "#00BFFF" },
+    "5": { "name": "Artist", "color": "#FF69B4" },
+    "6": { "name": "Developer", "color": "#9A86FD" }
   },
   "sections": [
     {
-      "name": "Admins",
-      "icon": "🛡️",
+      "name": "Management",
+      "icon": "🧠",
       "members": [
-        ["Milo", "1"],
-        ["Harper", "0"]
+        ["CyanWolf", "0"],
+        ["Sweet Japan", "1"],
+        ["DoubtedMango", "2"],
+        ["TrayePlays", "2"],
+        ["Planks", "2"]
       ]
     },
     {
       "name": "Builders",
       "icon": "🏗️",
       "members": [
-        ["Nova", "2"],
-        ["Riley", "2"]
+        ["ItzAleReal", "4"],
+        ["ShurikenIN", "4"],
+        ["Yashu", "4"],
+        ["Drifty", "3"],
+        ["Alex", "4"],
+        ["Bepis", "4"],
+        ["Wisp", "4"]
+      ]
+    },
+    {
+      "name": "Artists",
+      "icon": "🎨",
+      "members": [
+        ["buldozer", "5"],
+        ["TechnoMax", "5"]
       ]
     },
     {
       "name": "Developers",
       "icon": "💻",
       "members": [
-        ["Jordan", "3"],
-        ["Alex", "0"]
+        ["King James", "6"],
+        ["RicDevs", "6"],
+        ["FishyDev", "6"],
+        ["SoyGqbo", "6"],
+        ["TruncateBat", "6"]
       ]
     }
   ]
