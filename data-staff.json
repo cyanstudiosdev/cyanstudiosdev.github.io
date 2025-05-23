@@ -1,0 +1,34 @@
+{
+  "roles": {
+    "0": { "name": "Admin", "color": "#999999" },
+    "1": { "name": "Head Admin", "color": "#FFD700" },
+    "2": { "name": "Builder", "color": "#00FFFF" },
+    "3": { "name": "Lead Developer", "color": "#FF5555" }
+  },
+  "sections": [
+    {
+      "name": "Admins",
+      "icon": "🛡️",
+      "members": [
+        ["Milo", "1"],
+        ["Harper", "0"]
+      ]
+    },
+    {
+      "name": "Builders",
+      "icon": "🏗️",
+      "members": [
+        ["Nova", "2"],
+        ["Riley", "2"]
+      ]
+    },
+    {
+      "name": "Developers",
+      "icon": "💻",
+      "members": [
+        ["Jordan", "3"],
+        ["Alex", "0"]
+      ]
+    }
+  ]
+}
