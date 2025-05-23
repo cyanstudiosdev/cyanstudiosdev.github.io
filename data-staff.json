@@ -11,7 +11,7 @@
   "sections": [
     {
       "name": "Management",
-      "icon": ":brain:",
+      "icon": "🧠",
       "members": [
         ["CyanWolf", "0"],
         ["Sweet Japan", "1"],
@@ -22,7 +22,7 @@
     },
     {
       "name": "Developers",
-      "icon": ":computer:",
+      "icon": "💻",
       "members": [
         ["King James", "6"],
         ["RicDevs", "6"],
@@ -33,7 +33,7 @@
     },
     {
       "name": "Builders",
-      "icon": ":construction_site:",
+      "icon": "🏗️",
       "members": [
         ["Drifty", "3"],
         ["ItzAleReal", "4"],
@@ -47,7 +47,7 @@
     },
     {
       "name": "Artists",
-      "icon": ":art:",
+      "icon": "🎨",
       "members": [
         ["buldozer", "5"],
         ["TechnoMax", "5"]
