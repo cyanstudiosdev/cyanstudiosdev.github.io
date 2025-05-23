@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cyan Dev Staff</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+    }
+
+    .topnav {
+      background-color: #0d1117;
+      padding: 10px 20px;
+      border-bottom: 1px solid #21262d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topnav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topnav-left img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    .topnav-left .title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-left: 20px;
+    }
+
+    .tab {
+      color: #8b949e;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    .tab.active {
+      background-color: #161b22;
+      color: white;
+      font-weight: bold;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      padding: 0 20px 40px 20px;
+    }
+
+    .section {
+      background-color: #161b22;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #30363d;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      font-size: 1.3rem;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 10px;
+    }
+
+    .staff-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .staff-card {
+      background-color: #21262d;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      font-size: 0.95rem;
+      width: 160px;
+    }
+
+    .staff-name {
+      font-weight: bold;
+    }
+
+    .staff-role {
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
+      <span class="title">Cyan Dev</span>
+      <div class="tabs">
+        <a href="updates.html" class="tab">🔄 Changelog</a>
+        <a href="index.html" class="tab">📊 Roadmap</a>
+        <a href="/developers" class="tab active">👨‍💻 Devs</a>
+      </div>
+    </div>
+  </div>
+
+  <header>Meet the Staff</header>
+
+  <div class="container" id="staff-container">
+    <!-- Content loads here -->
+  </div>
+
+  <script>
+    fetch('data-staff.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('staff-container');
+        const roles = data.roles;
+
+        data.sections.forEach(section => {
+          const sectionDiv = document.createElement('div');
+          sectionDiv.className = 'section';
+
+          const heading = document.createElement('h2');
+          heading.textContent = `${section.icon} ${section.name}`;
+          sectionDiv.appendChild(heading);
+
+          const listDiv = document.createElement('div');
+          listDiv.className = 'staff-list';
+
+          section.members.forEach(([name, roleId]) => {
+            const role = roles[roleId] || { name: "Member", color: "#aaaaaa" };
+
+            const card = document.createElement('div');
+            card.className = 'staff-card';
+
+            const nameEl = document.createElement('div');
+            nameEl.className = 'staff-name';
+            nameEl.textContent = name;
+
+            const roleEl = document.createElement('div');
+            roleEl.className = 'staff-role';
+            roleEl.textContent = role.name;
+            roleEl.style.color = role.color;
+
+            card.appendChild(nameEl);
+            card.appendChild(roleEl);
+            listDiv.appendChild(card);
+          });
+
+          sectionDiv.appendChild(listDiv);
+          container.appendChild(sectionDiv);
+        });
+      })
+      .catch(err => console.error("Error loading staff data:", err));
+  </script>
+
+</body>
+</html>
