@@ -6,12 +6,13 @@
     "3": { "name": "Head Builder", "color": "#ADFF2F" },
     "4": { "name": "Builder", "color": "#00BFFF" },
     "5": { "name": "Artist", "color": "#FF69B4" },
-    "6": { "name": "Developer", "color": "#9A86FD" }
+    "6": { "name": "Developer", "color": "#9A86FD" },
+    "7": { "name": "Admin", "color": "#721422" }
   },
   "sections": [
     {
       "name": "Management",
-      "icon": "🧠",
+      "icon": ":brain:",
       "members": [
         ["CyanWolf", "0"],
         ["Sweet Japan", "1"],
@@ -22,7 +23,7 @@
     },
     {
       "name": "Developers",
-      "icon": "💻",
+      "icon": ":computer:",
       "members": [
         ["King James", "6"],
         ["RicDevs", "6"],
@@ -32,8 +33,15 @@
       ]
     },
     {
+      "name": "Admins",
+      "icon": ":hot_face:",
+      "members": [
+        ["Stillayden", "7"]
+      ]
+    },
+    {
       "name": "Builders",
-      "icon": "🏗️",
+      "icon": ":construction_site:",
       "members": [
         ["Drifty", "3"],
         ["ItzAleReal", "4"],
@@ -46,7 +54,7 @@
     },
     {
       "name": "Artists",
-      "icon": "🎨",
+      "icon": ":art:",
       "members": [
         ["buldozer", "5"],
         ["TechnoMax", "5"]
