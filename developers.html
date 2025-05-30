@@ -59,11 +59,25 @@
 
     .login-button {
       background-color: #5865F2;
-      border: none;
       color: white;
+      border: none;
       padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: bold;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+    }
+
+    .user-info img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
     }
 
     header {
@@ -126,22 +140,22 @@
       <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
       <span class="title">Cyan Dev</span>
       <div class="tabs" id="navTabs">
-        <!-- Loaded dynamically -->
+        <!-- Tabs will be loaded here -->
       </div>
     </div>
     <div class="topnav-right" id="userArea">
-      <button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>
+      <!-- Discord login/user goes here -->
     </div>
   </div>
 
   <header>Meet the Staff</header>
 
   <div class="container" id="staff-container">
-    <!-- Staff loads here -->
+    <!-- Staff content loads here -->
   </div>
 
   <script>
-    // Load tabs dynamically
+    // Load tabs from data-tabs.json
     fetch("data-tabs.json")
       .then(res => res.json())
       .then(tabs => {
@@ -157,7 +171,7 @@
         });
       });
 
-    // Load staff data
+    // Load staff from data-staff.json
     fetch("data-staff.json")
       .then(res => res.json())
       .then(data => {
@@ -198,17 +212,68 @@
           sectionDiv.appendChild(listDiv);
           container.appendChild(sectionDiv);
         });
-      })
-      .catch(err => console.error("Failed to load staff data:", err));
+      });
 
-    // Discord login
+    // Discord OAuth setup
     const clientId = "1374928268901220482";
     const redirectUri = "https://cyanstudiosdev.github.io";
-    function loginWithDiscord() {
-      const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
-      window.location.href = authUrl;
-    }
-  </script>
+    const userArea = document.getElementById("userArea");
 
+    function loginWithDiscord() {
+      const url = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
+      window.location.href = url;
+    }
+
+    function parseHash() {
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const token = params.get("access_token");
+      if (token) {
+        localStorage.setItem("discord_token", token);
+        window.location.hash = "";
+        fetchUser(token);
+      } else {
+        const savedToken = localStorage.getItem("discord_token");
+        if (savedToken) fetchUser(savedToken);
+        else renderLogin();
+      }
+    }
+
+    function fetchUser(token) {
+      fetch("https://discord.com/api/users/@me", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Invalid token");
+        return res.json();
+      })
+      .then(user => {
+        renderUser(user);
+      })
+      .catch(() => {
+        localStorage.removeItem("discord_token");
+        renderLogin();
+      });
+    }
+
+    function renderLogin() {
+      userArea.innerHTML = `<button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>`;
+    }
+
+    function renderUser(user) {
+      const avatar = user.avatar 
+        ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+        : `https://cdn.discordapp.com/embed/avatars/0.png`;
+      userArea.innerHTML = `
+        <div class="user-info">
+          <img src="${avatar}" alt="Avatar">
+          <span>${user.username}</span>
+        </div>`;
+    }
+
+    parseHash();
+  </script>
 </body>
 </html>
