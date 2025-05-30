@@ -57,6 +57,15 @@
       font-weight: bold;
     }
 
+    .login-button {
+      background-color: #5865F2;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
     header {
       padding: 20px;
       font-size: 2rem;
@@ -116,25 +125,43 @@
     <div class="topnav-left">
       <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
       <span class="title">Cyan Dev</span>
-      <div class="tabs">
-        <a href="updates.html" class="tab">🔄 Changelog</a>
-        <a href="index.html" class="tab">📊 Roadmap</a>
-        <a href="/developers" class="tab active">👨‍💻 Devs</a>
+      <div class="tabs" id="navTabs">
+        <!-- Loaded dynamically -->
       </div>
+    </div>
+    <div class="topnav-right" id="userArea">
+      <button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>
     </div>
   </div>
 
   <header>Meet the Staff</header>
 
   <div class="container" id="staff-container">
-    <!-- Content loads here -->
+    <!-- Staff loads here -->
   </div>
 
   <script>
-    fetch('data-staff.json')
+    // Load tabs dynamically
+    fetch("data-tabs.json")
+      .then(res => res.json())
+      .then(tabs => {
+        const navTabs = document.getElementById("navTabs");
+        const currentPage = window.location.pathname.split("/").pop();
+        tabs.forEach(tab => {
+          const a = document.createElement("a");
+          a.href = tab.href;
+          a.className = "tab";
+          if (tab.href === currentPage) a.classList.add("active");
+          a.textContent = tab.label;
+          navTabs.appendChild(a);
+        });
+      });
+
+    // Load staff data
+    fetch("data-staff.json")
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById('staff-container');
+        const container = document.getElementById("staff-container");
         const roles = data.roles;
 
         data.sections.forEach(section => {
@@ -172,7 +199,15 @@
           container.appendChild(sectionDiv);
         });
       })
-      .catch(err => console.error("Error loading staff data:", err));
+      .catch(err => console.error("Failed to load staff data:", err));
+
+    // Discord login
+    const clientId = "1374928268901220482";
+    const redirectUri = "https://cyanstudiosdev.github.io";
+    function loginWithDiscord() {
+      const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
+      window.location.href = authUrl;
+    }
   </script>
 
 </body>
