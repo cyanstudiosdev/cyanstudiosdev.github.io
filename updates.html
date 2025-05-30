@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cyan Dev Updates</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+    }
+
+    .topnav {
+      background-color: #0d1117;
+      padding: 10px 20px;
+      border-bottom: 1px solid #21262d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topnav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .topnav-left img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+    .topnav-left .title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-left: 20px;
+    }
+    .tab {
+      color: #8b949e;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+    .tab.active {
+      background-color: #161b22;
+      color: white;
+      font-weight: bold;
+    }
+    .login-button {
+      background: #21262d;
+      color: #8b949e;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .topnav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
+    .username {
+      font-size: 0.9rem;
+      color: #c9d1d9;
+    }
+    .logout-button {
+      background: transparent;
+      color: #8b949e;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-decoration: underline;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .updates-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0 20px 40px 20px;
+    }
+
+    .update-card {
+      background-color: #161b22;
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid #30363d;
+    }
+
+    .update-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .update-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .update-tag {
+      background-color: #238636;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+
+    .update-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .update-text {
+      margin-top: 10px;
+      white-space: pre-line;
+    }
+
+    .update-date {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
+      <span class="title">Cyan Dev</span>
+      <div class="tabs">
+        <a href="updates.html" class="tab active">📝 Updates</a>
+        <a href="roadmap.html" class="tab">📊 Roadmap</a>
+        <a href="staff.html" class="tab">👥 Staff</a>
+        <a href="developers.html" class="tab">💻 Devs</a>
+      </div>
+    </div>
+    <div class="topnav-right" id="userArea">
+      <button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>
+    </div>
+  </div>
+
+  <header>Latest Updates</header>
+
+  <div class="updates-container" id="updatesContainer">
+    <!-- Updates will be loaded here -->
+  </div>
+
+  <script>
+    // Discord Login System
+    const clientId = "1374928268901220482";
+    const redirectUri = "https://cyanstudiosdev.github.io";
+
+    function loginWithDiscord() {
+      const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
+      window.location.href = authUrl;
+    }
+
+    function getTokenFromHash() {
+      const match = window.location.hash.match(/access_token=([^&]*)/);
+      return match ? match[1] : null;
+    }
+
+    async function fetchDiscordUser(token) {
+      const res = await fetch("https://discord.com/api/users/@me", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error("Failed to fetch user");
+      return await res.json();
+    }
+
+    function showUser(user) {
+      const userArea = document.getElementById("userArea");
+      userArea.innerHTML = `
+        <img class="user-avatar" src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="avatar">
+        <span class="username">${user.username}#${user.discriminator}</span>
+        <button class="logout-button" onclick="logout()">Log out</button>
+      `;
+    }
+
+    function logout() {
+      localStorage.removeItem("discordUser");
+      location.reload();
+    }
+
+    const token = getTokenFromHash();
+    if (token) {
+      fetchDiscordUser(token).then(user => {
+        localStorage.setItem("discordUser", JSON.stringify(user));
+        showUser(user);
+        history.replaceState({}, document.title, window.location.pathname);
+      }).catch(() => alert("Discord login failed"));
+    } else if (localStorage.getItem("discordUser")) {
+      showUser(JSON.parse(localStorage.getItem("discordUser")));
+    }
+
+    // Load Updates from JSON
+    fetch('data-updates.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('updatesContainer');
+        data.forEach(update => {
+          const card = document.createElement('div');
+          card.className = 'update-card';
+
+          const header = document.createElement('div');
+          header.className = 'update-header';
+
+          const title = document.createElement('div');
+          title.className = 'update-title';
+          title.textContent = update.title;
+
+          const tag = document.createElement('div');
+          tag.className = 'update-tag';
+          tag.textContent = update.tag;
+
+          header.appendChild(title);
+          header.appendChild(tag);
+
+          const image = document.createElement('img');
+          image.className = 'update-image';
+          image.src = update.image;
+          image.alt = update.title;
+
+          const text = document.createElement('div');
+          text.className = 'update-text';
+          text.textContent = update.text;
+
+          const date = document.createElement('div');
+          date.className = 'update-date';
+          date.textContent = update.date;
+
+          card.appendChild(header);
+          card.appendChild(image);
+          card.appendChild(text);
+          card.appendChild(date);
+
+          container.appendChild(card);
+        });
+      });
+  </script>
+
+</body>
+</html>
