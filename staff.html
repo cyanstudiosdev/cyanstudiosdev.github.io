@@ -27,7 +27,7 @@
       gap: 12px;
     }
 
-    .topnav-left img {
+    .topnav-left img.logo {
       width: 32px;
       height: 32px;
       border-radius: 8px;
@@ -57,12 +57,18 @@
       font-weight: bold;
     }
 
-    .login-button {
-      background-color: #5865F2;
-      color: white;
-      border: none;
+    .login-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .login-btn {
       padding: 6px 12px;
       border-radius: 6px;
+      border: none;
+      background-color: #5865F2;
+      color: white;
       cursor: pointer;
       font-weight: bold;
     }
@@ -71,7 +77,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.95rem;
     }
 
     .user-info img {
@@ -137,14 +142,12 @@
 
   <div class="topnav">
     <div class="topnav-left">
-      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
+      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" class="logo" />
       <span class="title">Cyan Dev</span>
-      <div class="tabs" id="navTabs">
-        <!-- Tabs will be loaded here -->
-      </div>
+      <div class="tabs" id="tabs-container"></div>
     </div>
-    <div class="topnav-right" id="userArea">
-      <!-- Discord login/user goes here -->
+    <div class="login-section" id="login-section">
+      <button class="login-btn" onclick="login()">Login with Discord</button>
     </div>
   </div>
 
@@ -155,27 +158,43 @@
   </div>
 
   <script>
-    // Load tabs from data-tabs.json
+    // Tabs from data-tabs.json
     fetch("data-tabs.json")
       .then(res => res.json())
       .then(tabs => {
-        const navTabs = document.getElementById("navTabs");
-        const currentPage = window.location.pathname.split("/").pop();
+        const container = document.getElementById("tabs-container");
+        const current = location.pathname.split("/").pop();
         tabs.forEach(tab => {
           const a = document.createElement("a");
-          a.href = tab.href;
-          a.className = "tab";
-          if (tab.href === currentPage) a.classList.add("active");
-          a.textContent = tab.label;
-          navTabs.appendChild(a);
+          a.href = tab.link;
+          a.textContent = tab.icon + " " + tab.name;
+          a.className = "tab" + (tab.link.includes(current) ? " active" : "");
+          container.appendChild(a);
         });
       });
 
-    // Load staff from data-staff.json
-    fetch("data-staff.json")
+    // Load Discord login state
+    const loginSection = document.getElementById('login-section');
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      loginSection.innerHTML = `
+        <div class="user-info">
+          <img src="${user.avatar}" alt="User Avatar">
+          <span>${user.username}</span>
+        </div>
+      `;
+    }
+
+    function login() {
+      // Replace with your real login logic
+      location.href = "/api/login"; 
+    }
+
+    // Load staff data
+    fetch('data-staff.json')
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById("staff-container");
+        const container = document.getElementById('staff-container');
         const roles = data.roles;
 
         data.sections.forEach(section => {
@@ -212,68 +231,9 @@
           sectionDiv.appendChild(listDiv);
           container.appendChild(sectionDiv);
         });
-      });
-
-    // Discord OAuth setup
-    const clientId = "1374928268901220482";
-    const redirectUri = "https://cyanstudiosdev.github.io";
-    const userArea = document.getElementById("userArea");
-
-    function loginWithDiscord() {
-      const url = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
-      window.location.href = url;
-    }
-
-    function parseHash() {
-      const hash = window.location.hash.substring(1);
-      const params = new URLSearchParams(hash);
-      const token = params.get("access_token");
-      if (token) {
-        localStorage.setItem("discord_token", token);
-        window.location.hash = "";
-        fetchUser(token);
-      } else {
-        const savedToken = localStorage.getItem("discord_token");
-        if (savedToken) fetchUser(savedToken);
-        else renderLogin();
-      }
-    }
-
-    function fetchUser(token) {
-      fetch("https://discord.com/api/users/@me", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
       })
-      .then(res => {
-        if (!res.ok) throw new Error("Invalid token");
-        return res.json();
-      })
-      .then(user => {
-        renderUser(user);
-      })
-      .catch(() => {
-        localStorage.removeItem("discord_token");
-        renderLogin();
-      });
-    }
-
-    function renderLogin() {
-      userArea.innerHTML = `<button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>`;
-    }
-
-    function renderUser(user) {
-      const avatar = user.avatar 
-        ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
-        : `https://cdn.discordapp.com/embed/avatars/0.png`;
-      userArea.innerHTML = `
-        <div class="user-info">
-          <img src="${avatar}" alt="Avatar">
-          <span>${user.username}</span>
-        </div>`;
-    }
-
-    parseHash();
+      .catch(err => console.error("Error loading staff data:", err));
   </script>
+
 </body>
 </html>
