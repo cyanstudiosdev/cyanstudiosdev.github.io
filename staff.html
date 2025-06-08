@@ -168,7 +168,7 @@
 <!-- Discord Auth -->
 <script>
   const clientId = "1374928268901220482";
-  const redirectUri = "https://cyanstudiosdev.github.io";
+  const redirectUri = "https://cyanstudiosdev.github.io/staff.html";
 
   function loginWithDiscord() {
     const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
@@ -176,8 +176,8 @@
   }
 
   function getTokenFromHash() {
-    const match = window.location.hash.match(/access_token=([^&]*)/);
-    return match ? match[1] : null;
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    return params.get("access_token");
   }
 
   async function fetchDiscordUser(token) {
@@ -185,7 +185,7 @@
       headers: { Authorization: `Bearer ${token}` }
     });
     if (!res.ok) throw new Error("Failed to fetch user");
-    return await res.json();
+    return res.json();
   }
 
   function showUser(user) {
@@ -202,17 +202,26 @@
     location.reload();
   }
 
+  // Entry Point
   const token = getTokenFromHash();
   if (token) {
-    fetchDiscordUser(token).then(user => {
-      localStorage.setItem("discordUser", JSON.stringify(user));
-      showUser(user);
-      history.replaceState({}, document.title, window.location.pathname);
-    }).catch(() => alert("Discord login failed"));
-  } else if (localStorage.getItem("discordUser")) {
-    showUser(JSON.parse(localStorage.getItem("discordUser")));
+    fetchDiscordUser(token)
+      .then(user => {
+        localStorage.setItem("discordUser", JSON.stringify(user));
+        showUser(user);
+        // Clean URL
+        history.replaceState({}, document.title, window.location.pathname);
+      })
+      .catch(err => {
+        console.error("Login failed", err);
+        alert("Discord login failed.");
+      });
+  } else {
+    const user = localStorage.getItem("discordUser");
+    if (user) showUser(JSON.parse(user));
   }
 </script>
+
 
 <!-- Staff Loader -->
 <script>
