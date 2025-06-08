@@ -57,32 +57,40 @@
       font-weight: bold;
     }
 
-    .login-section {
+    .topnav-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .login-button {
-      background-color: #5865F2;
-      color: white;
-      padding: 6px 12px;
-      border: none;
+      background: #21262d;
+      color: #8b949e;
+      border: 1px solid #30363d;
       border-radius: 6px;
+      padding: 6px 12px;
       cursor: pointer;
-      font-weight: bold;
+      font-size: 0.9rem;
     }
 
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .user-info img {
+    .user-avatar {
       width: 28px;
       height: 28px;
       border-radius: 50%;
+    }
+
+    .username {
+      font-size: 0.9rem;
+      color: #c9d1d9;
+    }
+
+    .logout-button {
+      background: transparent;
+      color: #8b949e;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-decoration: underline;
     }
 
     header {
@@ -91,159 +99,154 @@
       font-weight: bold;
     }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
+    .content {
       padding: 0 20px 40px 20px;
     }
 
-    .section {
+    .staff-box {
       background-color: #161b22;
-      padding: 20px;
       border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
       border: 1px solid #30363d;
-    }
-
-    .section h2 {
-      margin-top: 0;
-      font-size: 1.3rem;
-      border-bottom: 1px solid #30363d;
-      padding-bottom: 10px;
-    }
-
-    .staff-list {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
+      align-items: center;
+      gap: 16px;
     }
 
-    .staff-card {
-      background-color: #21262d;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #30363d;
-      font-size: 0.95rem;
-      width: 160px;
+    .staff-box img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+
+    .staff-details {
+      display: flex;
+      flex-direction: column;
     }
 
     .staff-name {
       font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 2px;
     }
 
     .staff-role {
-      font-size: 0.85rem;
-      margin-top: 4px;
+      font-size: 0.9rem;
+      color: #8b949e;
     }
   </style>
 </head>
 <body>
 
-  <div class="topnav">
-    <div class="topnav-left">
-      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
-      <span class="title">Cyan Dev</span>
-      <div class="tabs" id="tabs-container">
-        <!-- Tabs will load here -->
-      </div>
-    </div>
-    <div class="login-section" id="login-section">
-      <!-- Login info or button appears here -->
-    </div>
+<div class="topnav">
+  <div class="topnav-left">
+    <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Logo" />
+    <span class="title">Cyan Dev</span>
+    <div class="tabs" id="tabsArea"></div>
   </div>
-
-  <header>Meet the Staff</header>
-
-  <div class="container" id="staff-container">
-    <!-- Staff sections will load here -->
+  <div class="topnav-right" id="userArea">
+    <button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>
   </div>
+</div>
 
-  <script>
-    // Load navigation tabs from data-tabs.json
-    fetch('data-tabs.json')
-      .then(res => res.json())
-      .then(tabs => {
-        const tabsContainer = document.getElementById('tabs-container');
-        const currentPage = 'staff.html';
-        tabs.forEach(tab => {
-          const a = document.createElement('a');
-          a.href = tab.link;
-          a.textContent = tab.icon + ' ' + tab.name;
-          a.className = 'tab' + (tab.link === currentPage ? ' active' : '');
-          tabsContainer.appendChild(a);
-        });
+<header>Meet the Staff</header>
+
+<div class="content" id="staffList">
+  <p>Loading staff...</p>
+</div>
+
+<!-- Tabs Loader -->
+<script>
+  fetch('data-tabs.json')
+    .then(res => res.json())
+    .then(data => {
+      const tabsArea = document.getElementById("tabsArea");
+      const path = window.location.pathname.split("/").pop();
+      data.forEach(tab => {
+        const tabLink = document.createElement("a");
+        tabLink.href = tab.url;
+        tabLink.textContent = tab.name;
+        tabLink.className = "tab" + (tab.url.includes(path) ? " active" : "");
+        tabsArea.appendChild(tabLink);
       });
+    });
+</script>
 
-    // Handle login display
-    const loginSection = document.getElementById('login-section');
-    const user = JSON.parse(localStorage.getItem('user')) || null;
+<!-- Discord Login -->
+<script>
+  const clientId = "1374928268901220482";
+  const redirectUri = "https://cyanstudiosdev.github.io";
 
-    if (user) {
-      loginSection.innerHTML = `
-        <div class="user-info">
-          <img src="${user.avatar}" alt="User Avatar">
-          <span>${user.username}</span>
-        </div>
-      `;
-    } else {
-      loginSection.innerHTML = `<button class="login-button" onclick="login()">Log in with Discord</button>`;
-    }
+  function loginWithDiscord() {
+    const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
+    window.location.href = authUrl;
+  }
 
-    function login() {
-      // Dummy login – replace with real OAuth logic
-      const dummyUser = {
-        username: "CyanWolf",
-        avatar: "https://cdn.discordapp.com/embed/avatars/0.png"
-      };
-      localStorage.setItem('user', JSON.stringify(dummyUser));
-      location.reload();
-    }
+  function getTokenFromHash() {
+    const match = window.location.hash.match(/access_token=([^&]*)/);
+    return match ? match[1] : null;
+  }
 
-    // Load and render staff
-    fetch('data-staff.json')
-      .then(res => res.json())
-      .then(data => {
-        const container = document.getElementById('staff-container');
-        const roles = data.roles;
+  async function fetchDiscordUser(token) {
+    const res = await fetch("https://discord.com/api/users/@me", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error("Failed to fetch user");
+    return await res.json();
+  }
 
-        data.sections.forEach(section => {
-          const sectionDiv = document.createElement('div');
-          sectionDiv.className = 'section';
+  function showUser(user) {
+    const userArea = document.getElementById("userArea");
+    userArea.innerHTML = `
+      <img class="user-avatar" src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="avatar">
+      <span class="username">${user.username}#${user.discriminator}</span>
+      <button class="logout-button" onclick="logout()">Log out</button>
+    `;
+  }
 
-          const heading = document.createElement('h2');
-          heading.textContent = `${section.icon} ${section.name}`;
-          sectionDiv.appendChild(heading);
+  function logout() {
+    localStorage.removeItem("discordUser");
+    location.reload();
+  }
 
-          const listDiv = document.createElement('div');
-          listDiv.className = 'staff-list';
+  const token = getTokenFromHash();
+  if (token) {
+    fetchDiscordUser(token).then(user => {
+      localStorage.setItem("discordUser", JSON.stringify(user));
+      showUser(user);
+      history.replaceState({}, document.title, window.location.pathname);
+    }).catch(() => alert("Discord login failed"));
+  } else if (localStorage.getItem("discordUser")) {
+    showUser(JSON.parse(localStorage.getItem("discordUser")));
+  }
+</script>
 
-          section.members.forEach(([name, roleId]) => {
-            const role = roles[roleId] || { name: "Member", color: "#aaaaaa" };
+<!-- Load Staff from data-staff.json -->
+<script>
+  fetch("data-staff.json")
+    .then(res => res.json())
+    .then(staff => {
+      const container = document.getElementById("staffList");
+      container.innerHTML = "";
 
-            const card = document.createElement('div');
-            card.className = 'staff-card';
-
-            const nameEl = document.createElement('div');
-            nameEl.className = 'staff-name';
-            nameEl.textContent = name;
-
-            const roleEl = document.createElement('div');
-            roleEl.className = 'staff-role';
-            roleEl.textContent = role.name;
-            roleEl.style.color = role.color;
-
-            card.appendChild(nameEl);
-            card.appendChild(roleEl);
-            listDiv.appendChild(card);
-          });
-
-          sectionDiv.appendChild(listDiv);
-          container.appendChild(sectionDiv);
-        });
-      })
-      .catch(err => console.error("Error loading staff data:", err));
-  </script>
+      staff.forEach(person => {
+        const box = document.createElement("div");
+        box.className = "staff-box";
+        box.innerHTML = `
+          <img src="${person.avatar}" alt="${person.name}">
+          <div class="staff-details">
+            <div class="staff-name">${person.name}</div>
+            <div class="staff-role">${person.role}</div>
+          </div>
+        `;
+        container.appendChild(box);
+      });
+    })
+    .catch(() => {
+      document.getElementById("staffList").innerHTML = "<p>Failed to load staff.</p>";
+    });
+</script>
 
 </body>
 </html>
