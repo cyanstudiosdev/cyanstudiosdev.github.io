@@ -27,7 +27,7 @@
       gap: 12px;
     }
 
-    .topnav-left img.logo {
+    .topnav-left img {
       width: 32px;
       height: 32px;
       border-radius: 8px;
@@ -57,31 +57,40 @@
       font-weight: bold;
     }
 
-    .login-section {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
     .login-btn {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: none;
       background-color: #5865F2;
       color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       cursor: pointer;
-      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+
+    .login-btn:hover {
+      background-color: #4752c4;
+    }
+
+    .login-btn img {
+      width: 20px;
+      height: 20px;
     }
 
     .user-info {
       display: flex;
       align-items: center;
       gap: 10px;
+      font-size: 0.9rem;
     }
 
     .user-info img {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
     }
 
@@ -142,55 +151,39 @@
 
   <div class="topnav">
     <div class="topnav-left">
-      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" class="logo" />
+      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
       <span class="title">Cyan Dev</span>
-      <div class="tabs" id="tabs-container"></div>
+      <div class="tabs" id="tabs">
+        <!-- Tabs loaded from data-tabs.json -->
+      </div>
     </div>
-    <div class="login-section" id="login-section">
-      <button class="login-btn" onclick="login()">Login with Discord</button>
+    <div id="login-section">
+      <!-- Login state handled here -->
     </div>
   </div>
 
   <header>Meet the Staff</header>
 
   <div class="container" id="staff-container">
-    <!-- Staff content loads here -->
+    <!-- Staff cards rendered here -->
   </div>
 
   <script>
-    // Tabs from data-tabs.json
-    fetch("data-tabs.json")
+    // Load tabs
+    fetch('data-tabs.json')
       .then(res => res.json())
       .then(tabs => {
-        const container = document.getElementById("tabs-container");
-        const current = location.pathname.split("/").pop();
+        const tabsContainer = document.getElementById('tabs');
         tabs.forEach(tab => {
-          const a = document.createElement("a");
-          a.href = tab.link;
-          a.textContent = tab.icon + " " + tab.name;
-          a.className = "tab" + (tab.link.includes(current) ? " active" : "");
-          container.appendChild(a);
+          const a = document.createElement('a');
+          a.className = 'tab' + (tab.href === 'staff.html' ? ' active' : '');
+          a.href = tab.href;
+          a.textContent = tab.icon + ' ' + tab.name;
+          tabsContainer.appendChild(a);
         });
       });
 
-    // Load Discord login state
-    const loginSection = document.getElementById('login-section');
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      loginSection.innerHTML = `
-        <div class="user-info">
-          <img src="${user.avatar}" alt="User Avatar">
-          <span>${user.username}</span>
-        </div>
-      `;
-    }
-
-    function login() {
-      // Replace with your real login logic
-      location.href = "/api/login"; 
-    }
-
-    // Load staff data
+    // Load staff
     fetch('data-staff.json')
       .then(res => res.json())
       .then(data => {
@@ -231,8 +224,38 @@
           sectionDiv.appendChild(listDiv);
           container.appendChild(sectionDiv);
         });
-      })
-      .catch(err => console.error("Error loading staff data:", err));
+      });
+
+    // Dummy login simulation
+    const user = JSON.parse(localStorage.getItem('user')) || null;
+
+    const loginSection = document.getElementById('login-section');
+
+    if (user) {
+      loginSection.innerHTML = `
+        <div class="user-info">
+          <img src="${user.avatar}" alt="User Avatar">
+          <span>${user.username}</span>
+        </div>
+      `;
+    } else {
+      loginSection.innerHTML = `
+        <button class="login-btn" onclick="login()">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f47e.png">
+          Login with Discord
+        </button>
+      `;
+    }
+
+    function login() {
+      // Replace with real login logic
+      const dummyUser = {
+        username: "CyanDevUser",
+        avatar: "https://cdn.discordapp.com/embed/avatars/0.png"
+      };
+      localStorage.setItem('user', JSON.stringify(dummyUser));
+      location.reload();
+    }
   </script>
 
 </body>
