@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cyan Staff</title>
+  <title>Cyan Dev Roadmap</title>
   <style>
     body {
       margin: 0;
@@ -20,49 +20,36 @@
       align-items: center;
       justify-content: space-between;
     }
-
     .topnav-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-
     .topnav-left img {
       width: 32px;
       height: 32px;
       border-radius: 8px;
     }
-
     .topnav-left .title {
       font-size: 1.2rem;
       font-weight: bold;
     }
-
     .tabs {
       display: flex;
       gap: 12px;
       margin-left: 20px;
     }
-
     .tab {
       color: #8b949e;
       text-decoration: none;
       padding: 6px 12px;
       border-radius: 6px;
     }
-
     .tab.active {
       background-color: #161b22;
       color: white;
       font-weight: bold;
     }
-
-    .topnav-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
     .login-button {
       background: #21262d;
       color: #8b949e;
@@ -73,17 +60,20 @@
       font-size: 0.9rem;
     }
 
+    .topnav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     .user-avatar {
       width: 28px;
       height: 28px;
       border-radius: 50%;
     }
-
     .username {
       font-size: 0.9rem;
       color: #c9d1d9;
     }
-
     .logout-button {
       background: transparent;
       color: #8b949e;
@@ -98,155 +88,270 @@
       font-size: 2rem;
       font-weight: bold;
     }
-
-    .content {
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
       padding: 0 20px 40px 20px;
     }
-
-    .staff-box {
+    .column {
+      flex: 1;
+      min-width: 250px;
       background-color: #161b22;
       border-radius: 10px;
       padding: 16px;
-      margin-bottom: 20px;
+    }
+    .column h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 10px;
+    }
+    .card {
+      background-color: #21262d;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
       border: 1px solid #30363d;
-      display: flex;
+      cursor: pointer;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      background-color: #238636;
+      color: white;
+      font-size: 0.75rem;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+    .date {
+      display: block;
+      color: #8b949e;
+      font-size: 0.75rem;
+      margin-top: 4px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0; width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
       align-items: center;
-      gap: 16px;
     }
-
-    .staff-box img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-    }
-
-    .staff-details {
+    .modal-content {
+      background-color: #161b22;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      color: #c9d1d9;
       display: flex;
       flex-direction: column;
+      gap: 10px;
     }
-
-    .staff-name {
-      font-weight: bold;
-      font-size: 1.1rem;
-      margin-bottom: 2px;
+    .modal-content textarea {
+      width: 100%;
+      background: #0d1117;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 10px;
     }
-
-    .staff-role {
-      font-size: 0.9rem;
-      color: #8b949e;
+    .modal-content button {
+      padding: 10px;
+      background-color: #238636;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<div class="topnav">
-  <div class="topnav-left">
-    <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Logo" />
-    <span class="title">Cyan Dev</span>
-    <div class="tabs" id="tabsArea"></div>
-  </div>
-  <div class="topnav-right" id="userArea">
-    <button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>
-  </div>
+  <div class="topnav">
+    <div class="topnav-left">
+      <img src="139276e8-9fbd-487e-94f4-3c78e9a8f178.png" alt="Cyan Dev Logo" />
+      <span class="title">Cyan Dev</span>
+<div class="tabs">
+  <a href="updates.html" class="tab">🔄 Changelog</a>
+  <a href="#" class="tab active">📊 Roadmap</a>
+  <a href="/developers" class="tab">👨‍💻 Devs</a>
 </div>
+    </div>
+    <div class="topnav-right" id="userArea">
+      <button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>
+    </div>
+  </div>
 
-<header>Meet the Staff</header>
+  <header>Main Roadmap</header>
 
-<div class="content" id="staffList">
-  <p>Loading staff...</p>
-</div>
+  <div class="container">
+    <div class="column" id="planned">
+      <h2>📝 Planned</h2>
+    </div>
+    <div class="column" id="prog">
+      <h2>🚧 In Progress</h2>
+    </div>
+    <div class="column" id="next">
+      <h2>⏭️ Coming Next</h2>
+    </div>
+    <div class="column" id="released">
+      <h2>✅ Released</h2>
+    </div>
+  </div>
 
-<!-- Tabs Loader -->
-<script>
-  fetch('data-tabs.json')
-    .then(res => res.json())
-    .then(data => {
-      const tabsArea = document.getElementById("tabsArea");
-      const path = window.location.pathname.split("/").pop();
-      data.forEach(tab => {
-        const tabLink = document.createElement("a");
-        tabLink.href = tab.url;
-        tabLink.textContent = tab.name;
-        tabLink.className = "tab" + (tab.url.includes(path) ? " active" : "");
-        tabsArea.appendChild(tabLink);
+  <div id="commentModal" class="modal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Comment on:</h3>
+      <textarea id="commentText" rows="4" placeholder="Write a comment..."></textarea>
+      <button onclick="sendComment()">Submit Comment</button>
+      <button onclick="sendUpvote()">Upvote 👍</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => {
+        data.forEach(item => {
+          const column = document.getElementById(item.section);
+          if (column) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => openModal(item.title);
+
+            const title = document.createElement('div');
+            title.textContent = item.title;
+            card.appendChild(title);
+
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.textContent = item["main tag"];
+            card.appendChild(tag);
+
+            if (item["set time"]) {
+              const date = document.createElement('span');
+              date.className = 'date';
+              date.textContent = item.time;
+              card.appendChild(date);
+            }
+
+            column.appendChild(card);
+          }
+        });
       });
-    });
-</script>
+  </script>
 
-<!-- Discord Login -->
-<script>
-  const clientId = "1374928268901220482";
-  const redirectUri = "https://cyanstudiosdev.github.io";
+  <script>
+    const clientId = "1374928268901220482";
+    const redirectUri = "https://cyanstudiosdev.github.io";
 
-  function loginWithDiscord() {
-    const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
-    window.location.href = authUrl;
-  }
+    function loginWithDiscord() {
+      const authUrl = https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify;
+      window.location.href = authUrl;
+    }
 
-  function getTokenFromHash() {
-    const match = window.location.hash.match(/access_token=([^&]*)/);
-    return match ? match[1] : null;
-  }
+    function getTokenFromHash() {
+      const match = window.location.hash.match(/access_token=([^&]*)/);
+      return match ? match[1] : null;
+    }
 
-  async function fetchDiscordUser(token) {
-    const res = await fetch("https://discord.com/api/users/@me", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error("Failed to fetch user");
-    return await res.json();
-  }
-
-  function showUser(user) {
-    const userArea = document.getElementById("userArea");
-    userArea.innerHTML = `
-      <img class="user-avatar" src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="avatar">
-      <span class="username">${user.username}#${user.discriminator}</span>
-      <button class="logout-button" onclick="logout()">Log out</button>
-    `;
-  }
-
-  function logout() {
-    localStorage.removeItem("discordUser");
-    location.reload();
-  }
-
-  const token = getTokenFromHash();
-  if (token) {
-    fetchDiscordUser(token).then(user => {
-      localStorage.setItem("discordUser", JSON.stringify(user));
-      showUser(user);
-      history.replaceState({}, document.title, window.location.pathname);
-    }).catch(() => alert("Discord login failed"));
-  } else if (localStorage.getItem("discordUser")) {
-    showUser(JSON.parse(localStorage.getItem("discordUser")));
-  }
-</script>
-
-<!-- Load Staff from data-staff.json -->
-<script>
-  fetch("data-staff.json")
-    .then(res => res.json())
-    .then(staff => {
-      const container = document.getElementById("staffList");
-      container.innerHTML = "";
-
-      staff.forEach(person => {
-        const box = document.createElement("div");
-        box.className = "staff-box";
-        box.innerHTML = `
-          <img src="${person.avatar}" alt="${person.name}">
-          <div class="staff-details">
-            <div class="staff-name">${person.name}</div>
-            <div class="staff-role">${person.role}</div>
-          </div>
-        `;
-        container.appendChild(box);
+    async function fetchDiscordUser(token) {
+      const res = await fetch("https://discord.com/api/users/@me", {
+        headers: { Authorization: Bearer ${token} }
       });
-    })
-    .catch(() => {
-      document.getElementById("staffList").innerHTML = "<p>Failed to load staff.</p>";
-    });
-</script>
+      if (!res.ok) throw new Error("Failed to fetch user");
+      return await res.json();
+    }
+
+    function showUser(user) {
+      const userArea = document.getElementById("userArea");
+      userArea.innerHTML = 
+        <img class="user-avatar" src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="avatar">
+        <span class="username">${user.username}#${user.discriminator}</span>
+        <button class="logout-button" onclick="logout()">Log out</button>
+      ;
+    }
+
+    function logout() {
+      localStorage.removeItem("discordUser");
+      location.reload();
+    }
+
+    const token = getTokenFromHash();
+    if (token) {
+      fetchDiscordUser(token).then(user => {
+        localStorage.setItem("discordUser", JSON.stringify(user));
+        showUser(user);
+        history.replaceState({}, document.title, window.location.pathname);
+      }).catch(() => alert("Discord login failed"));
+    } else if (localStorage.getItem("discordUser")) {
+      showUser(JSON.parse(localStorage.getItem("discordUser")));
+    }
+  </script>
+
+  <script>
+    let selectedTitle = "";
+
+    function openModal(title) {
+      if (!localStorage.getItem("discordUser")) {
+        alert("You must log in with Discord to comment or upvote.");
+        return;
+      }
+      selectedTitle = title;
+      document.getElementById("modalTitle").textContent = Comment on: ${title};
+      document.getElementById("commentModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("commentModal").style.display = "none";
+      document.getElementById("commentText").value = "";
+    }
+
+    function sendComment() {
+      const user = JSON.parse(localStorage.getItem("discordUser"));
+      const comment = document.getElementById("commentText").value;
+      if (!comment) return alert("Please write a comment.");
+
+      fetch("docs/secure-webhook.json").then(res => res.json()).then(data => {
+        fetch(data.webhook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: 💬 **New Comment on** \${selectedTitle}\\n**User:** ${user.username}#${user.discriminator}\n**Comment:** ${comment}
+          })
+        }).then(() => {
+          alert("Comment sent!");
+          closeModal();
+        });
+      });
+    }
+
+    function sendUpvote() {
+      const user = JSON.parse(localStorage.getItem("discordUser"));
+      fetch("docs/secure-webhook.json").then(res => res.json()).then(data => {
+        fetch(data.webhook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: 👍 **Upvote for** \${selectedTitle}\\n**By:** ${user.username}#${user.discriminator}
+          })
+        }).then(() => {
+          alert("Upvote sent!");
+          closeModal();
+        });
+      });
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("commentModal");
+      if (event.target === modal) closeModal();
+    }
+  </script>
 
 </body>
 </html>
