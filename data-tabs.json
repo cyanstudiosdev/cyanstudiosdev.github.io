@@ -1,5 +1,5 @@
 [
-  { "label": "🔄 Changelog", "href": "updates" },
-  { "label": "📊 Roadmap", "href": "index" },
-  { "label": "👥 Staff", "href": "staff" }
+  { "name": "Changelog", "icon": "🔄", "link": "updates.html" },
+  { "name": "Roadmap", "icon": "📊", "link": "index.html" },
+  { "name": "Devs", "icon": "👨‍💻", "link": "staff.html" }
 ]
