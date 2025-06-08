@@ -128,6 +128,7 @@
       color: #8b949e;
     }
   </style>
+  <script src="discord-login.js"></script>
 </head>
 <body>
 
@@ -137,8 +138,8 @@
     <span class="title">Cyan Dev</span>
     <div class="tabs" id="tabsArea"></div>
   </div>
-  <div class="topnav-right" id="userArea">
-    <button class="login-button" onclick="loginWithDiscord()">Log in with Discord</button>
+  <div class="topnav-right">
+    <div id="userArea" style="position: absolute; top: 10px; right: 10px;"></div>
   </div>
 </div>
 
@@ -164,64 +165,6 @@
       });
     });
 </script>
-
-<!-- Discord Auth -->
-<script>
-  const clientId = "1374928268901220482";
-  const redirectUri = "https://cyanstudiosdev.github.io/staff.html";
-
-  function loginWithDiscord() {
-    const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify`;
-    window.location.href = authUrl;
-  }
-
-  function getTokenFromHash() {
-    const params = new URLSearchParams(window.location.hash.slice(1));
-    return params.get("access_token");
-  }
-
-  async function fetchDiscordUser(token) {
-    const res = await fetch("https://discord.com/api/users/@me", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error("Failed to fetch user");
-    return res.json();
-  }
-
-  function showUser(user) {
-    const userArea = document.getElementById("userArea");
-    userArea.innerHTML = `
-      <img class="user-avatar" src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="avatar">
-      <span class="username">${user.username}#${user.discriminator}</span>
-      <button class="logout-button" onclick="logout()">Log out</button>
-    `;
-  }
-
-  function logout() {
-    localStorage.removeItem("discordUser");
-    location.reload();
-  }
-
-  // Entry Point
-  const token = getTokenFromHash();
-  if (token) {
-    fetchDiscordUser(token)
-      .then(user => {
-        localStorage.setItem("discordUser", JSON.stringify(user));
-        showUser(user);
-        // Clean URL
-        history.replaceState({}, document.title, window.location.pathname);
-      })
-      .catch(err => {
-        console.error("Login failed", err);
-        alert("Discord login failed.");
-      });
-  } else {
-    const user = localStorage.getItem("discordUser");
-    if (user) showUser(JSON.parse(user));
-  }
-</script>
-
 
 <!-- Staff Loader -->
 <script>
