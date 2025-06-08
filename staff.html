@@ -33,7 +33,7 @@
       border-radius: 8px;
     }
 
-    .topnav-left .title {
+    .title {
       font-size: 1.2rem;
       font-weight: bold;
     }
@@ -103,36 +103,28 @@
       padding: 0 20px 40px 20px;
     }
 
-    .staff-box {
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+
+    .member {
+      display: inline-block;
       background-color: #161b22;
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 20px;
       border: 1px solid #30363d;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .staff-box img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-    }
-
-    .staff-details {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .staff-name {
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin: 6px;
       font-weight: bold;
-      font-size: 1.1rem;
-      margin-bottom: 2px;
     }
 
-    .staff-role {
-      font-size: 0.9rem;
+    .member-role {
+      display: block;
+      font-size: 0.85rem;
       color: #8b949e;
     }
   </style>
@@ -156,7 +148,7 @@
   <p>Loading staff...</p>
 </div>
 
-<!-- Tabs Loader -->
+<!-- Tabs -->
 <script>
   fetch('data-tabs.json')
     .then(res => res.json())
@@ -173,7 +165,7 @@
     });
 </script>
 
-<!-- Discord Login -->
+<!-- Discord Auth -->
 <script>
   const clientId = "1374928268901220482";
   const redirectUri = "https://cyanstudiosdev.github.io";
@@ -222,29 +214,41 @@
   }
 </script>
 
-<!-- Load Staff from data-staff.json -->
+<!-- Staff Loader -->
 <script>
   fetch("data-staff.json")
     .then(res => res.json())
-    .then(staff => {
+    .then(data => {
       const container = document.getElementById("staffList");
       container.innerHTML = "";
 
-      staff.forEach(person => {
-        const box = document.createElement("div");
-        box.className = "staff-box";
-        box.innerHTML = `
-          <img src="${person.avatar}" alt="${person.name}">
-          <div class="staff-details">
-            <div class="staff-name">${person.name}</div>
-            <div class="staff-role">${person.role}</div>
-          </div>
-        `;
-        container.appendChild(box);
+      data.sections.forEach(section => {
+        const sectionDiv = document.createElement("div");
+        sectionDiv.className = "section";
+
+        const sectionTitle = document.createElement("div");
+        sectionTitle.className = "section-title";
+        sectionTitle.innerText = `${section.icon} ${section.name}`;
+        sectionDiv.appendChild(sectionTitle);
+
+        section.members.forEach(([name, roleId]) => {
+          const role = data.roles[roleId];
+          const memberDiv = document.createElement("div");
+          memberDiv.className = "member";
+          memberDiv.style.borderColor = role.color;
+          memberDiv.style.color = role.color;
+          memberDiv.innerHTML = `
+            ${name}
+            <span class="member-role">${role.name}</span>
+          `;
+          sectionDiv.appendChild(memberDiv);
+        });
+
+        container.appendChild(sectionDiv);
       });
     })
     .catch(() => {
-      document.getElementById("staffList").innerHTML = "<p>Failed to load staff.</p>";
+      document.getElementById("staffList").innerHTML = "<p>Failed to load staff data.</p>";
     });
 </script>
 
